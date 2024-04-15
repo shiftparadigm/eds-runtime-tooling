@@ -1,0 +1,17 @@
+{
+	"name": "@shiftparadigm/eds-core",
+	"version": "0.1.0",
+	"description": "",
+	"private": "false",
+	"exports": {
+		"./*": {
+			"import": {
+				"default": "./src/*.js"
+			}
+		}
+	},
+	"scripts": {
+	},
+	"author": "",
+	"license": "Apache-2.0"
+}
