@@ -4,13 +4,20 @@
 	"description": "",
 	"private": "false",
 	"exports": {
+		"./*.css": {
+			"import": {
+				"default": "./src/*.css"
+			}
+		},
 		"./*": {
 			"import": {
-				"default": "./src/*.js"
+				"types": "./dist/*.d.ts",
+				"default": "./dist/*.js"
 			}
 		}
 	},
 	"scripts": {
+		"build": "tsc"
 	},
 	"author": "",
 	"license": "Apache-2.0"

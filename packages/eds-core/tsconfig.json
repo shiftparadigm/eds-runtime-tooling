@@ -1,0 +1,10 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"allowJs": true,
+		"outDir": "dist",
+		"target": "esnext",
+		"rootDir": "src"
+	},
+	"include": ["src"],
+}
