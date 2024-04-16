@@ -1,23 +1,26 @@
 {
 	"name": "@shiftparadigm/eds-core",
-	"version": "0.1.0-alpha.1",
+	"version": "0.1.0-alpha.2",
 	"description": "",
 	"private": "false",
 	"exports": {
 		"./*.css": {
 			"import": {
 				"default": "./src/*.css"
-			}
+			},
+			"default": "./src/*.css"
 		},
 		"./*": {
 			"import": {
 				"types": "./dist/*.d.ts",
 				"default": "./dist/*.js"
-			}
+			},
+			"default": "./dist/*.js"
 		}
 	},
 	"scripts": {
-		"build": "tsc"
+		"build": "tsc",
+		"dev-pack": "pnpm build && pnpm pack --pack-dest ../../"
 	},
 	"author": "",
 	"license": "Apache-2.0"
