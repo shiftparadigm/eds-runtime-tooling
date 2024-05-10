@@ -1,0 +1,57 @@
+name: All packages build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches:
+      - '**/*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+        registry-url: 'https://npm.pkg.github.com/'
+        scope: '@shiftparadigm'
+    - uses: ./.github/workflows/parts/cache/
+
+    ###########
+    # BUILD
+    - name: Build
+      run: |
+        if [[ $VERSION_SUFFIX ]]; then
+          VERSION_SUFFIX_PARAM="--version-suffix sha.$VERSION_SUFFIX"
+        else
+          VERSION_SUFFIX_PARAM=''
+        fi
+        cd packages/eds-core
+        pnpm pack --pack-dest ../../
+      env:
+        VERSION_SUFFIX: ${{ github.ref != 'refs/heads/main' && github.sha || '' }}
+
+    ###########
+    # PUBLISH
+    # - name: Publish npm packages to GitHub
+    #   working-directory: ./
+    #   run:  |
+    #     find . -type f -regex ".*\.tgz" -exec npm publish "{}" --access public \;
+    #   env:
+    #     # Cannot publish from a PrincipleStudios github org to `@shiftparadigm/` npm scope, so this is currently failing
+    #     NODE_AUTH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+    - name: Publish npm packages to NPM
+      working-directory: ./
+      if: ${{ github.ref == 'refs/heads/main' }}
+      run:  |
+        sed -i 's_//npm.pkg.github.com/_//registry.npmjs.org/_g' ${NPM_CONFIG_USERCONFIG}
+        find . -type f -regex ".*\.tgz" -exec npm publish "{}" --access public \;
+      env:
+        NODE_AUTH_TOKEN: "${{ secrets.NPM_TOKEN }}"
