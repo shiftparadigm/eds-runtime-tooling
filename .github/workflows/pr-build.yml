@@ -26,17 +26,9 @@ jobs:
 
     ###########
     # BUILD
-    - name: Build
+    - name: Pack
       run: |
-        if [[ $VERSION_SUFFIX ]]; then
-          VERSION_SUFFIX_PARAM="--version-suffix sha.$VERSION_SUFFIX"
-        else
-          VERSION_SUFFIX_PARAM=''
-        fi
-        cd packages/eds-core
-        pnpm pack --pack-dest ../../
-      env:
-        VERSION_SUFFIX: ${{ github.ref != 'refs/heads/main' && github.sha || '' }}
+        pnpm -r dev-pack
 
     ###########
     # PUBLISH
