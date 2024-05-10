@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@vitejs/plugin-react': ^4.2.1
-
 importers:
 
   .:
