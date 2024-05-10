@@ -40,12 +40,13 @@ jobs:
 
     ###########
     # PUBLISH
-    - name: Publish npm packages to GitHub
-      working-directory: ./
-      run:  |
-        find . -type f -regex ".*\.tgz" -exec npm publish "{}" --access public \;
-      env:
-        NODE_AUTH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+    # - name: Publish npm packages to GitHub
+    #   working-directory: ./
+    #   run:  |
+    #     find . -type f -regex ".*\.tgz" -exec npm publish "{}" --access public \;
+    #   env:
+    #     # Cannot publish from a PrincipleStudios github org to `@shiftparadigm/` npm scope, so this is currently failing
+    #     NODE_AUTH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
     - name: Publish npm packages to NPM
       working-directory: ./
       if: ${{ github.ref == 'refs/heads/main' }}
