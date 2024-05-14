@@ -1,0 +1,38 @@
+{
+	"name": "@shiftparadigm/eds-dev-tools",
+	"version": "0.1.0-alpha.3",
+	"description": "",
+	"bin": {
+		"shift-aem": "dist/dev.mjs",
+		"shift-aem-build": "dist/build.mjs"
+	},
+	"exports": {
+		"./*": {
+			"import": {
+				"types": "./dist/*.d.ts",
+				"default": "./dist/*.mjs"
+			},
+			"default": "./dist/*.mjs"
+		}
+	},
+	"scripts": {
+		"build": "tsc",
+		"dev-pack": "pnpm build && pnpm pack --pack-dest ../../"
+	},
+	"author": "",
+	"license": "Apache-2.0",
+	"devDependencies": {
+		"@adobe/aem-cli": "^16.3.15",
+		"@types/node": "^20.12.12",
+		"rollup": "^4.17.2"
+	},
+	"peerDependencies": {
+		"@adobe/aem-cli": "^16.3.15"
+	},
+	"dependencies": {
+		"glob": "^10.3.15",
+		"vite": "^5.2.11",
+		"vite-plugin-css-injected-by-js": "^3.5.1",
+		"vite-tsconfig-paths": "^4.3.2"
+	}
+}
