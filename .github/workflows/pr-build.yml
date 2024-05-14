@@ -26,6 +26,9 @@ jobs:
 
     ###########
     # BUILD
+    - name: Install dependencies
+      run: |
+        pnpm install
     - name: Pack
       run: |
         pnpm -r dev-pack
