@@ -4,7 +4,13 @@ import { SpawnOptionsWithoutStdio, exec, spawn, type ExecOptions } from 'node:ch
 import { build } from 'vite';
 import type { RollupWatcher, RollupWatcherEvent } from 'rollup';
 
-const watcher = await build({ build: { watch: {} } }) as RollupWatcher;
+const watcher = await build({
+	mode: 'development',
+	build: {
+		watch: {},
+		sourcemap: true,
+	}
+}) as RollupWatcher;
 
 await firstBuildCompleted(watcher);
 await ensureGitDir('dist');
