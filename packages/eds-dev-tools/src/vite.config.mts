@@ -9,18 +9,19 @@ function normalizeWindowsPath(path: string) {
 }
 
 const scripts = globSync('src/scripts/*').map(normalizeWindowsPath);
-const blocks = globSync('src/blocks/*/*.ts').map(normalizeWindowsPath);
+const blocks = globSync('src/blocks/*/*').map(normalizeWindowsPath);
 
 function isValidBlockFile(path: string) {
-	const match = /^src\/blocks\/(?<folder>.*)\/(?<file>.*)\.(t|j)s/g.exec(path);
+	const match = /^src\/blocks\/(?<folder>.*)\/(?<file>.*)\.m?(t|j)s/g.exec(path);
 	if (!match || !match.groups) return false;
 	return match.groups.folder === match.groups.file;
 }
 
 const entry = Object.fromEntries(
-	[...scripts, ...blocks.filter(isValidBlockFile)].map((path) => {
-		const regexResult = /^src\/(.*)\.ts$/g.exec(path);
-		return [regexResult![1], path];
+	[...scripts, ...blocks.filter(isValidBlockFile)].flatMap((path) => {
+		const regexResult = /^src\/(.*)\.m?(j|t)s$/g.exec(path);
+		if (!regexResult) return [];
+		return [[regexResult![1], path]];
 	}),
 );
 
@@ -56,4 +57,10 @@ export default defineConfig({
 		},
 		outDir: 'dist',
 	},
+	esbuild: {
+		supported: {
+			// Adobe's boilerplate makes some pretty advanced assumptions about 
+			'top-level-await': true, //browsers can handle top-level-await features
+		},
+	}
 });
