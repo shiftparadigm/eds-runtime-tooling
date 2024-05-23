@@ -1,4 +1,4 @@
-import { copy } from 'fs-extra';
+import { copy, remove } from 'fs-extra';
 import colors from 'picocolors';
 import { resolve, relative } from 'path';
 import type { ResolvedConfig, PluginOption } from 'vite';
@@ -43,7 +43,6 @@ const EdgeDeliveryTools = (): PluginOption => {
         name: 'Edge-Delivery-Tools',
         configResolved(resolvedConfig) {
             viteConfig = resolvedConfig;
-            viteConfig.server.watch
 
             const publicGlob = `${viteConfig.publicDir}/**/*`;
             const watcher = chokidar.watch(publicGlob);
@@ -52,16 +51,16 @@ const EdgeDeliveryTools = (): PluginOption => {
                 switch (event) {
                     case 'add':
                     case 'change':
-                        writeLog('add/change ' + path);
                         copyMatchedFiles([path]);
                         break;
                     case 'unlink':
-                        writeLog('TODO: delete ' + getDestPathForSource(path));
-                        break;
-                    case 'addDir':
-                        break;
                     case 'unlinkDir':
-                        writeLog('TODO: remove dir ' + getDestPathForSource(path));
+                        const outDestination = getDestPathForSource(path);
+                        writeLog(
+                            colors.dim('removing ') +
+                            colors.red(relative(currentDir, outDestination))
+                        );
+                        remove(outDestination);
                         break;
                 }
             });
