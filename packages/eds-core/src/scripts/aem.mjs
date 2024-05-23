@@ -36,6 +36,7 @@ export { toCamelCase } from "../utils/toCamelCase";
 export { toClassName } from "../utils/toClassName";
 export { updateSectionsStatus } from "../utils/updateSectionsStatus";
 export { waitForLCP } from "../utils/waitForLCP";
+export { wrapTextNodes } from "../utils/wrapTextNodes";
 
 /**
  * Auto initializiation.
