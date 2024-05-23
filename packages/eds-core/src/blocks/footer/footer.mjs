@@ -1,5 +1,5 @@
-import { getMetadata } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
+import { getMetadata } from '../../scripts/aem.mjs';
+import { loadFragment } from '../fragment/fragment.mjs';
 
 /**
  * loads and decorates the footer

@@ -1,6 +1,6 @@
 {
 	"name": "@shiftparadigm/eds-dev-tools",
-	"version": "0.1.0-alpha.5",
+	"version": "0.1.0-alpha.6",
 	"description": "",
 	"bin": {
 		"shift-aem": "dist/dev.mjs",
@@ -27,7 +27,8 @@
 		"rollup": "^4.17.2"
 	},
 	"peerDependencies": {
-		"@adobe/aem-cli": "^16.3.15"
+		"@adobe/aem-cli": "^16.3.15",
+		"@shiftparadigm/eds-core": "workspace:^"
 	},
 	"dependencies": {
 		"glob": "^10.3.15",
