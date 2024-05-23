@@ -1,17 +1,22 @@
+export type Breakpoint = {
+  media?: `(${string})`;
+  width?: `${number}`;
+}
+
 /**
  * Returns a picture element with webp and fallbacks
  * @param {string} src The image URL
  * @param {string} [alt] The image alternative text
  * @param {boolean} [eager] Set loading attribute to eager
- * @param {Array} [breakpoints] Breakpoints and corresponding params (eg. width)
+ * @param {Array<Breakpoint>} [breakpoints] Breakpoints and corresponding params (eg. width)
  * @returns {Element} The picture element
  */
 export function createOptimizedPicture(
-  src,
-  alt = '',
-  eager = false,
-  breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]
-) {
+  src: string,
+  alt: string = '',
+  eager: boolean = false,
+  breakpoints: Array<Breakpoint> = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]
+): Element {
   const url = new URL(src, window.location.href);
   const picture = document.createElement('picture');
   const { pathname } = url;

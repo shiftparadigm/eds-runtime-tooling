@@ -5,7 +5,7 @@ import { getMetadata } from "./getMetadata.mjs";
  * Set template (page structure) and theme (page styles).
  */
 export function decorateTemplateAndTheme() {
-  const addClasses = (element, classes) => {
+  const addClasses = (element: Element, classes: string) => {
     classes.split(',').forEach((c) => {
       element.classList.add(toClassName(c.trim()));
     });

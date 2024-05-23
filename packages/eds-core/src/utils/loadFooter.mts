@@ -4,10 +4,10 @@ import { loadBlock } from "./loadBlock.mjs";
 
 /**
  * Loads a block named 'footer' into footer
- * @param footer footer element
- * @returns {Promise}
+ * @param {Element} footer footer element
+ * @returns {Promise<Element>}
  */
-export async function loadFooter(footer) {
+export async function loadFooter(footer: Element) {
   const footerBlock = buildBlock('footer', '');
   footer.append(footerBlock);
   decorateBlock(footerBlock);

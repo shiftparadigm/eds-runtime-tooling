@@ -7,7 +7,7 @@ import { loadBlock } from "./loadBlock.mjs";
  * @param {Element} header header element
  * @returns {Promise}
  */
-export async function loadHeader(header) {
+export async function loadHeader(header: Element) {
   const headerBlock = buildBlock('header', '');
   header.append(headerBlock);
   decorateBlock(headerBlock);

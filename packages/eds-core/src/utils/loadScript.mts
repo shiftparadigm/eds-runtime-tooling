@@ -3,8 +3,8 @@
  * @param {string} src URL to the JS file
  * @param {Object} attrs additional optional attributes
  */
-export async function loadScript(src, attrs) {
-  return new Promise((resolve, reject) => {
+export async function loadScript(src: string, attrs: Record<string, string>) {
+  return new Promise<void>((resolve, reject) => {
     if (!document.querySelector(`head > script[src="${src}"]`)) {
       const script = document.createElement('script');
       script.src = src;
@@ -14,7 +14,7 @@ export async function loadScript(src, attrs) {
           script.setAttribute(attr, attrs[attr]);
         }
       }
-      script.onload = resolve;
+      script.onload = () => resolve();
       script.onerror = reject;
       document.head.append(script);
     } else {

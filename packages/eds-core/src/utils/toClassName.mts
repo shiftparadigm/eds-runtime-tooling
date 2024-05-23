@@ -3,7 +3,7 @@
  * @param {string} name The unsanitized string
  * @returns {string} The class name
  */
-export function toClassName(name) {
+export function toClassName(name: string): string {
   return typeof name === 'string'
     ? name
       .toLowerCase()
