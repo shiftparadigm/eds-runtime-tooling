@@ -3,20 +3,55 @@ import { fileURLToPath } from 'node:url';
 import { SpawnOptionsWithoutStdio, exec, spawn, type ExecOptions } from 'node:child_process';
 import { build } from 'vite';
 import type { RollupWatcher, RollupWatcherEvent } from 'rollup';
+import chokidar from 'chokidar';
+import { entryGlobs } from './vite/entry-watch.mjs';
 
-const watcher = await build({
-	mode: 'development',
-	build: {
-		watch: {},
-		sourcemap: true,
-	}
-}) as RollupWatcher;
+let watcher = setupBuildServer();
 
-await firstBuildCompleted(watcher);
+await firstBuildCompleted(await watcher);
 await ensureGitDir('dist');
+
+let restarting = false;
+const chokidarWatcher = chokidar.watch(entryGlobs, { ignoreInitial: true });
+
+chokidarWatcher.on('add', (path) => {
+	console.log('add ' + path);
+	restartBuildServer();
+});
+chokidarWatcher.on('unlink', (path) => {
+	console.log('unlink ' + path);
+	restartBuildServer();
+});
+
 await spawnNodeAsync('@adobe/aem-cli', ['up'], {
 	cwd: join(process.cwd(), 'dist'),
 });
+
+function setupBuildServer() {
+	return build({
+		mode: 'development',
+		build: {
+			watch: {},
+			sourcemap: true,
+		}
+	}) as Promise<RollupWatcher>;
+}
+
+async function restartBuildServer() {
+	if (restarting) return;
+	restarting = true;
+	const oldWatcher = watcher;
+	watcher = new Promise<RollupWatcher>((resolve, reject) => {
+		oldWatcher
+			.then(ow => ow.close())
+			// .then(() => new Promise((resolve) => setTimeout(resolve, 50)))
+			.then(() => setupBuildServer())
+			.then(newWatcher => {
+				resolve(newWatcher);
+				restarting = false;
+			}, reject);
+	});
+}
 
 function firstBuildCompleted(watcher: RollupWatcher) {
 	// promise resolves when the build completes

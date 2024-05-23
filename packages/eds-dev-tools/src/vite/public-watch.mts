@@ -1,15 +1,13 @@
 import { copy, remove } from 'fs-extra';
 import colors from 'picocolors';
 import { resolve, relative } from 'path';
-import type { ResolvedConfig, PluginOption } from 'vite';
+import { type ResolvedConfig, type PluginOption, normalizePath } from 'vite';
 import chokidar from 'chokidar';
 
-const EdgeDeliveryTools = (): PluginOption => {
+const PublicFolderWatcher = (): PluginOption => {
     let viteConfig: ResolvedConfig;
-    const paths: string[] = [];
     const currentDir = resolve();
 
-    
     function writeLog(message: string) {
         viteConfig.logger.info(
             colors.green('[Edge-Delivery-Tools] ') + message
@@ -36,14 +34,15 @@ const EdgeDeliveryTools = (): PluginOption => {
 
     function getDestPathForSource(file: string) {
         // Be careful, publicDir seems to be resolved automatically but not build.outDir
-        return file.replace(/\\/g, '/').replace(viteConfig.publicDir, resolve(currentDir, viteConfig.build.outDir).replace(/\\/g, '/'));
+        return normalizePath(normalizePath(file).replace(viteConfig.publicDir, resolve(currentDir, viteConfig.build.outDir)));
     }
 
     return {
-        name: 'Edge-Delivery-Tools',
+        name: 'PublicFolderWatcher',
         configResolved(resolvedConfig) {
             viteConfig = resolvedConfig;
 
+            if (!viteConfig.build.watch) return;
             const publicGlob = `${viteConfig.publicDir}/**/*`;
             const watcher = chokidar.watch(publicGlob);
 
@@ -68,4 +67,4 @@ const EdgeDeliveryTools = (): PluginOption => {
     };
 };
 
-export default EdgeDeliveryTools;
+export default PublicFolderWatcher;

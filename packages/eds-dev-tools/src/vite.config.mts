@@ -1,42 +1,8 @@
 import { defineConfig } from 'vite';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
-import { globSync } from 'glob';
-import { fileURLToPath } from 'node:url';
-import EdgeDeliveryTools from './vite/public-watch.mjs';
-
-function normalizeWindowsPath(path: string) {
-	return path.replace(/\\/g, '/');
-}
-
-const scripts = globSync('src/scripts/*').map(normalizeWindowsPath);
-const blocks = globSync('src/blocks/*/*').map(normalizeWindowsPath);
-
-function isValidBlockFile(path: string) {
-	const match = /^src\/blocks\/(?<folder>.*)\/(?<file>.*)\.m?(t|j)s/g.exec(path);
-	if (!match || !match.groups) return false;
-	return match.groups.folder === match.groups.file;
-}
-
-const entry = Object.fromEntries(
-	[...scripts, ...blocks.filter(isValidBlockFile)].flatMap((path) => {
-		const regexResult = /^src\/(.*)\.m?(j|t)s$/g.exec(path);
-		if (!regexResult) return [];
-		return [[regexResult![1], path]];
-	}),
-);
-
-const scriptsBoilerplate = [
-	'scripts/aem',
-	'scripts/scripts',
-	'scripts/delayed',
-];
-for (const boilerplate of scriptsBoilerplate) {
-	if (entry[boilerplate]) continue;
-	entry[boilerplate] = fileURLToPath(
-		import.meta.resolve(`@shiftparadigm/eds-core/${boilerplate}`),
-	);
-}
+import PublicFolderWatcher from './vite/public-watch.mjs';
+import EntryWatcher from './vite/entry-watch.mjs';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -46,12 +12,13 @@ export default defineConfig({
 			relativeCSSInjection: true,
 			suppressUnusedCssWarning: true,
 		}),
-		EdgeDeliveryTools(),
+		PublicFolderWatcher(),
+		EntryWatcher(),
 	],
 	build: {
 		cssCodeSplit: true,
 		lib: {
-			entry,
+			entry: {},
 			formats: ['es'],
 			fileName(format, entryName) {
 				return entryName + '.js';
