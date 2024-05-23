@@ -1,4 +1,4 @@
-import { getMetadata } from '../../scripts/aem.mjs';
+import { getMetadata } from "../../utils/getMetadata.mjs";
 import { loadFragment } from '../fragment/fragment.mjs';
 
 // media query match that indicates mobile/tablet width

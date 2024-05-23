@@ -1,4 +1,4 @@
-import { createOptimizedPicture } from '../../scripts/aem.mjs';
+import { createOptimizedPicture } from "../../utils/createOptimizedPicture.mjs";
 
 export default function decorate(block) {
   /* change to ul, li */
