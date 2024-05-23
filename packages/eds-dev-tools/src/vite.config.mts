@@ -3,6 +3,7 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import { globSync } from 'glob';
 import { fileURLToPath } from 'node:url';
+import EdgeDeliveryTools from './vite/public-watch.mjs';
 
 function normalizeWindowsPath(path: string) {
 	return path.replace(/\\/g, '/');
@@ -45,6 +46,7 @@ export default defineConfig({
 			relativeCSSInjection: true,
 			suppressUnusedCssWarning: true,
 		}),
+		EdgeDeliveryTools(),
 	],
 	build: {
 		cssCodeSplit: true,

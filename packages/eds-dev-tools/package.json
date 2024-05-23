@@ -23,6 +23,8 @@
 	"license": "Apache-2.0",
 	"devDependencies": {
 		"@adobe/aem-cli": "^16.3.15",
+		"@types/fs-extra": "^11.0.4",
+		"@types/micromatch": "^4.0.7",
 		"@types/node": "^20.12.12",
 		"rollup": "^4.17.2"
 	},
@@ -31,7 +33,12 @@
 		"@shiftparadigm/eds-core": "workspace:^"
 	},
 	"dependencies": {
+		"chokidar": "^3.6.0",
+		"fast-glob": "^3.3.2",
+		"fs-extra": "^11.2.0",
 		"glob": "^10.3.15",
+		"micromatch": "^4.0.7",
+		"picocolors": "^1.0.1",
 		"vite": "^5.2.11",
 		"vite-plugin-css-injected-by-js": "^3.5.1",
 		"vite-tsconfig-paths": "^4.3.2"
