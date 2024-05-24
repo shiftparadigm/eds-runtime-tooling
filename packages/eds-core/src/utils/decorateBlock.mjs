@@ -1,3 +1,5 @@
+import { wrapTextNodes } from "./wrapTextNodes.mjs";
+
 /**
  * Decorates a block.
  * @param {Element} block The block element
