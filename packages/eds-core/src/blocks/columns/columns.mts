@@ -1,5 +1,8 @@
 export default function decorate(block: Element) {
-  const cols: HTMLCollection = block.firstElementChild!.children;
+  const cols: HTMLCollection | undefined = block.firstElementChild?.children;
+  if (!cols) {
+    return
+  }
   block.classList.add(`columns-${cols.length}-cols`);
 
   // setup image columns
