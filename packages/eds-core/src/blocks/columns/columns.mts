@@ -1,10 +1,15 @@
-export default function decorate(block) {
-  const cols = [...block.firstElementChild.children];
+export default function decorate(block: Element) {
+  const cols: HTMLCollection | undefined = block.firstElementChild?.children;
+  if (!cols) {
+    return
+  }
   block.classList.add(`columns-${cols.length}-cols`);
 
   // setup image columns
-  [...block.children].forEach((row) => {
-    [...row.children].forEach((col) => {
+  const blockChildren: Array<Element> = Array.from(block.children)
+  blockChildren.forEach((row) => {
+    const rowChildren: Array<Element> = Array.from(row.children)
+    rowChildren.forEach((col) => {
       const pic = col.querySelector('picture');
       if (pic) {
         const picWrapper = pic.closest('div');
