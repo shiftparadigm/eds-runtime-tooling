@@ -1,9 +1,10 @@
+import chokidar from 'chokidar';
+import type { RollupWatcher, RollupWatcherEvent } from 'rollup';
+import { build } from 'vite';
+import type { SpawnOptionsWithoutStdio } from 'node:child_process';
+import { exec, spawn, type ExecOptions } from 'node:child_process';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SpawnOptionsWithoutStdio, exec, spawn, type ExecOptions } from 'node:child_process';
-import { build } from 'vite';
-import type { RollupWatcher, RollupWatcherEvent } from 'rollup';
-import chokidar from 'chokidar';
 import { entryGlobs } from './vite/entry-watch.mjs';
 
 let watcher = setupBuildServer();
@@ -33,7 +34,7 @@ function setupBuildServer() {
 		build: {
 			watch: {},
 			sourcemap: true,
-		}
+		},
 	}) as Promise<RollupWatcher>;
 }
 
@@ -43,10 +44,10 @@ function restartBuildServer() {
 	const oldWatcher = watcher;
 	watcher = new Promise<RollupWatcher>((resolve, reject) => {
 		oldWatcher
-			.then(ow => ow.close())
+			.then((ow) => ow.close())
 			// .then(() => new Promise((resolve) => setTimeout(resolve, 50)))
 			.then(() => setupBuildServer())
-			.then(newWatcher => {
+			.then((newWatcher) => {
 				resolve(newWatcher);
 				restarting = false;
 			}, reject);
@@ -94,7 +95,11 @@ function execAsync(command: string, options?: ExecOptions): Promise<string> {
 	});
 }
 
-function spawnNodeAsync(packageName: string, args: string[] = [], options?: SpawnOptionsWithoutStdio) {
+function spawnNodeAsync(
+	packageName: string,
+	args: string[] = [],
+	options?: SpawnOptionsWithoutStdio,
+) {
 	const jsPath = fileURLToPath(import.meta.resolve(packageName));
 	const handle = spawn('node', [jsPath, ...args], options);
 

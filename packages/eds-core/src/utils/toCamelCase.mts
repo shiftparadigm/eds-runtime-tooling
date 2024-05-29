@@ -1,4 +1,4 @@
-import { toClassName } from "./toClassName.mjs";
+import { toClassName } from './toClassName.mjs';
 
 /**
  * Sanitizes a string for use as a js property name.
@@ -6,5 +6,5 @@ import { toClassName } from "./toClassName.mjs";
  * @returns {string} The camelCased name
  */
 export function toCamelCase(name: string): string {
-  return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+	return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
