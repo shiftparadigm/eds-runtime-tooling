@@ -9,7 +9,7 @@ export default async function decorate(block: Element) {
 	// load footer as fragment
 	const footerMeta = getMetadata('footer');
 	const footerPath = footerMeta
-		? new URL(footerMeta, String(window.location)).pathname
+		? new URL(footerMeta, window.location.href).pathname
 		: '/footer';
 	const fragment = await loadFragment(footerPath);
 
