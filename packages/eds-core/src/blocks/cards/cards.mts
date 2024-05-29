@@ -3,7 +3,7 @@ import { createOptimizedPicture } from '../../utils/createOptimizedPicture.mjs';
 export default function decorate(block: Element) {
 	/* change to ul, li */
 	const ul = document.createElement('ul');
-		Array.from(block.children).forEach((row) => {
+	Array.from(block.children).forEach((row) => {
 		const li = document.createElement('li');
 		while (row.firstElementChild) li.append(row.firstElementChild);
 		Array.from(li.children).forEach((div) => {
