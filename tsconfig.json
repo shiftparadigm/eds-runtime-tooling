@@ -9,6 +9,21 @@
 	"references": [
 		{
 			"path": "./packages/eds-core"
-		}
+		},
+		{
+			"path": "./packages/eds-core/tsconfig.node.json"
+		},
+		{
+			"path": "./packages/eds-dev-tools"
+		},
+		{
+			"path": "./packages/eds-dev-tools/tsconfig.node.json"
+		},
+		{
+			"path": "./packages/example"
+		},
+		{
+			"path": "./packages/example/tsconfig.node.json"
+		},
 	]
 }

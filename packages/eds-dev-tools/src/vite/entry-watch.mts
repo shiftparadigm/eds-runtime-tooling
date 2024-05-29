@@ -1,6 +1,5 @@
 import colors from 'picocolors';
 import { type ResolvedConfig, type PluginOption, normalizePath } from 'vite';
-import chokidar from 'chokidar';
 import { globSync } from 'glob';
 import { fileURLToPath } from 'node:url';
 

@@ -4,6 +4,13 @@
 	"type": "module",
 	"private": "true",
 	"scripts": {
+		"lint": "npm run typecheck && npm run eslint && npm run prettier",
+		"lint:fix": "npm run typecheck && npm run eslint:fix && npm run prettier:fix",
+		"eslint": "eslint \"**/*.{cjs,mjs,js,mts,cts,ts,tsx}\"",
+		"eslint:fix": "eslint \"**/*.{cjs,mjs,js,mts,cts,ts,tsx}\" --fix",
+		"prettier": "prettier --list-different \"**/*.{cjs,mjs,js,mts,cts,ts,tsx,yaml,json}\"",
+		"prettier:fix": "prettier --write \"**/*.{cjs,mjs,js,mts,cts,ts,tsx,yaml,json}\"",
+		"typecheck": "tsc -b"
 	},
 	"engines": {
 		"node": ">=20.8.1",

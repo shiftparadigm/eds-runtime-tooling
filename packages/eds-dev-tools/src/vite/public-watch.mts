@@ -26,7 +26,7 @@ const PublicFolderWatcher = (): PluginOption => {
                 );
                 copy(files[i], outDestination).catch((err) => {
                     viteConfig.logger.error(colors.red(`The file "${files[i]}" could not be copied`));
-                    viteConfig.logger.error(err);
+                    viteConfig.logger.error(String(err));
                 });
             }
         }
@@ -54,13 +54,15 @@ const PublicFolderWatcher = (): PluginOption => {
                         break;
                     case 'unlink':
                     case 'unlinkDir':
-                        const outDestination = getDestPathForSource(path);
-                        writeLog(
-                            colors.dim('removing ') +
-                            colors.red(relative(currentDir, outDestination))
-                        );
-                        remove(outDestination);
-                        break;
+                        {
+                            const outDestination = getDestPathForSource(path);
+                            writeLog(
+                                colors.dim('removing ') +
+                                colors.red(relative(currentDir, outDestination))
+                            );
+                            void remove(outDestination);
+                            break;
+                        }
                 }
             });
         },

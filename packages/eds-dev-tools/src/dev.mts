@@ -37,7 +37,7 @@ function setupBuildServer() {
 	}) as Promise<RollupWatcher>;
 }
 
-async function restartBuildServer() {
+function restartBuildServer() {
 	if (restarting) return;
 	restarting = true;
 	const oldWatcher = watcher;
@@ -80,12 +80,14 @@ async function ensureGitDir(path: string): Promise<void> {
 	const gitRemote = (await execAsync(`git config remote.origin.url`)).trim();
 	try {
 		await execAsync(`git clone --bare ${gitRemote} "${target}"`);
-	} catch (ex) {}
+	} catch (ex) {
+		console.warn('failed to clone git repo for use with AEM CLI');
+	}
 }
 
 function execAsync(command: string, options?: ExecOptions): Promise<string> {
 	return new Promise<string>((resolve, reject) => {
-		exec(command, options, (error, stdout, stderr) => {
+		exec(command, options, (error, stdout) => {
 			if (error) reject(error);
 			else resolve(stdout.toString());
 		});
@@ -96,11 +98,11 @@ function spawnNodeAsync(packageName: string, args: string[] = [], options?: Spaw
 	const jsPath = fileURLToPath(import.meta.resolve(packageName));
 	const handle = spawn('node', [jsPath, ...args], options);
 
-	handle.stdout.on('data', function (data) {
+	handle.stdout.on('data', function (data: string | Uint8Array) {
 		process.stdout.write(data);
 	});
 
-	handle.stderr.on('data', function (data) {
+	handle.stderr.on('data', function (data: string | Uint8Array) {
 		process.stderr.write(data);
 	});
 
