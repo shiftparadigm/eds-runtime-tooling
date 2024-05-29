@@ -1,4 +1,3 @@
-
 /**
  * Wrap inline text content of block cells within a <p> tag.
  * @param {Element} block the block element
@@ -25,21 +24,23 @@ export function wrapTextNodes(block: Element) {
 		el.append(wrapper);
 	};
 
-	block.querySelectorAll<HTMLDivElement>(':scope > div > div').forEach((blockColumn) => {
-		if (blockColumn.hasChildNodes()) {
-			const hasWrapper =
-				!!blockColumn.firstElementChild &&
-				validWrappers.some(
-					(tagName) => blockColumn.firstElementChild?.tagName === tagName,
-				);
-			if (!hasWrapper) {
-				wrap(blockColumn);
-			} else if (
-				blockColumn.firstElementChild.tagName === 'PICTURE' &&
-				(blockColumn.children.length > 1 || !!blockColumn.textContent?.trim())
-			) {
-				wrap(blockColumn);
+	block
+		.querySelectorAll<HTMLDivElement>(':scope > div > div')
+		.forEach((blockColumn) => {
+			if (blockColumn.hasChildNodes()) {
+				const hasWrapper =
+					!!blockColumn.firstElementChild &&
+					validWrappers.some(
+						(tagName) => blockColumn.firstElementChild?.tagName === tagName,
+					);
+				if (!hasWrapper) {
+					wrap(blockColumn);
+				} else if (
+					blockColumn.firstElementChild.tagName === 'PICTURE' &&
+					(blockColumn.children.length > 1 || !!blockColumn.textContent?.trim())
+				) {
+					wrap(blockColumn);
+				}
 			}
-		}
-	});
+		});
 }

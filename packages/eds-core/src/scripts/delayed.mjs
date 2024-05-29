@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { sampleRUM } from "../utils/sampleRUM.mjs";
+import { sampleRUM } from '../utils/sampleRUM.mjs';
 
 // Core Web Vitals RUM collection
 sampleRUM('cwv');

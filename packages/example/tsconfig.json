@@ -5,10 +5,7 @@
 		"declaration": true,
 		"esModuleInterop": true,
 		"inlineSourceMap": false,
-		"lib": [
-			"dom",
-			"esnext"
-		],
+		"lib": ["dom", "esnext"],
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"noFallthroughCasesInSwitch": true,
@@ -31,5 +28,5 @@
 		"outDir": "dist",
 		"rootDir": "src"
 	},
-	"include": ["src"],
+	"include": ["src"]
 }

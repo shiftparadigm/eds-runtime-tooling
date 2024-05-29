@@ -1,9 +1,10 @@
+import chokidar from 'chokidar';
+import type { RollupWatcher, RollupWatcherEvent } from 'rollup';
+import { build } from 'vite';
+import type { SpawnOptionsWithoutStdio } from 'node:child_process';
+import { exec, spawn, type ExecOptions } from 'node:child_process';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SpawnOptionsWithoutStdio, exec, spawn, type ExecOptions } from 'node:child_process';
-import { build } from 'vite';
-import type { RollupWatcher, RollupWatcherEvent } from 'rollup';
-import chokidar from 'chokidar';
 import { entryGlobs } from './vite/entry-watch.mjs';
 
 let watcher = setupBuildServer();
@@ -33,20 +34,20 @@ function setupBuildServer() {
 		build: {
 			watch: {},
 			sourcemap: true,
-		}
+		},
 	}) as Promise<RollupWatcher>;
 }
 
-async function restartBuildServer() {
+function restartBuildServer() {
 	if (restarting) return;
 	restarting = true;
 	const oldWatcher = watcher;
 	watcher = new Promise<RollupWatcher>((resolve, reject) => {
 		oldWatcher
-			.then(ow => ow.close())
+			.then((ow) => ow.close())
 			// .then(() => new Promise((resolve) => setTimeout(resolve, 50)))
 			.then(() => setupBuildServer())
-			.then(newWatcher => {
+			.then((newWatcher) => {
 				resolve(newWatcher);
 				restarting = false;
 			}, reject);
@@ -80,27 +81,33 @@ async function ensureGitDir(path: string): Promise<void> {
 	const gitRemote = (await execAsync(`git config remote.origin.url`)).trim();
 	try {
 		await execAsync(`git clone --bare ${gitRemote} "${target}"`);
-	} catch (ex) {}
+	} catch (ex) {
+		console.warn('failed to clone git repo for use with AEM CLI');
+	}
 }
 
 function execAsync(command: string, options?: ExecOptions): Promise<string> {
 	return new Promise<string>((resolve, reject) => {
-		exec(command, options, (error, stdout, stderr) => {
+		exec(command, options, (error, stdout) => {
 			if (error) reject(error);
 			else resolve(stdout.toString());
 		});
 	});
 }
 
-function spawnNodeAsync(packageName: string, args: string[] = [], options?: SpawnOptionsWithoutStdio) {
+function spawnNodeAsync(
+	packageName: string,
+	args: string[] = [],
+	options?: SpawnOptionsWithoutStdio,
+) {
 	const jsPath = fileURLToPath(import.meta.resolve(packageName));
 	const handle = spawn('node', [jsPath, ...args], options);
 
-	handle.stdout.on('data', function (data) {
+	handle.stdout.on('data', function (data: string | Uint8Array) {
 		process.stdout.write(data);
 	});
 
-	handle.stderr.on('data', function (data) {
+	handle.stderr.on('data', function (data: string | Uint8Array) {
 		process.stderr.write(data);
 	});
 

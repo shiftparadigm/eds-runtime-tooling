@@ -1,4 +1,4 @@
-import { getMetadata } from "../../utils/getMetadata.mjs";
+import { getMetadata } from '../../utils/getMetadata.mjs';
 import { loadFragment } from '../fragment/fragment.mjs';
 
 /**
@@ -6,15 +6,17 @@ import { loadFragment } from '../fragment/fragment.mjs';
  * @param {Element} block The footer block element
  */
 export default async function decorate(block) {
-  // load footer as fragment
-  const footerMeta = getMetadata('footer');
-  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
-  const fragment = await loadFragment(footerPath);
+	// load footer as fragment
+	const footerMeta = getMetadata('footer');
+	const footerPath = footerMeta
+		? new URL(footerMeta, window.location).pathname
+		: '/footer';
+	const fragment = await loadFragment(footerPath);
 
-  // decorate footer DOM
-  block.textContent = '';
-  const footer = document.createElement('div');
-  while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
+	// decorate footer DOM
+	block.textContent = '';
+	const footer = document.createElement('div');
+	while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
 
-  block.append(footer);
+	block.append(footer);
 }

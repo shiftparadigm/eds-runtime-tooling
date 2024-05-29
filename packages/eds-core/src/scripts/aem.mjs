@@ -10,51 +10,54 @@
  * governing permissions and limitations under the License.
  */
 
-import { sampleRUM } from "../utils/sampleRUM.mjs";
-import { setup } from "../utils/setup.mjs";
+import { sampleRUM } from '../utils/sampleRUM.mjs';
+import { setup } from '../utils/setup.mjs';
 
 export { sampleRUM, setup };
-export { buildBlock } from "../utils/buildBlock.mjs";
-export { createOptimizedPicture } from "../utils/createOptimizedPicture";
-export { decorateBlock } from "../utils/decorateBlock";
-export { decorateBlocks } from "../utils/decorateBlocks";
-export { decorateButtons } from "../utils/decorateButtons";
-export { decorateIcon } from "../utils/decorateIcon";
-export { decorateIcons } from "../utils/decorateIcons";
-export { decorateSections } from "../utils/decorateSections";
-export { decorateTemplateAndTheme } from "../utils/decorateTemplateAndTheme";
-export { fetchPlaceholders } from "../utils/fetchPlaceholders";
-export { getMetadata } from "../utils/getMetadata";
-export { loadBlock } from "../utils/loadBlock";
-export { loadBlocks } from "../utils/loadBlocks";
-export { loadCSS } from "../utils/loadCSS";
-export { loadFooter } from "../utils/loadFooter";
-export { loadHeader } from "../utils/loadHeader";
-export { loadScript } from "../utils/loadScript";
-export { readBlockConfig } from "../utils/readBlockConfig";
-export { toCamelCase } from "../utils/toCamelCase";
-export { toClassName } from "../utils/toClassName";
-export { updateSectionsStatus } from "../utils/updateSectionsStatus";
-export { waitForLCP } from "../utils/waitForLCP";
-export { wrapTextNodes } from "../utils/wrapTextNodes";
+export { buildBlock } from '../utils/buildBlock.mjs';
+export { createOptimizedPicture } from '../utils/createOptimizedPicture';
+export { decorateBlock } from '../utils/decorateBlock';
+export { decorateBlocks } from '../utils/decorateBlocks';
+export { decorateButtons } from '../utils/decorateButtons';
+export { decorateIcon } from '../utils/decorateIcon';
+export { decorateIcons } from '../utils/decorateIcons';
+export { decorateSections } from '../utils/decorateSections';
+export { decorateTemplateAndTheme } from '../utils/decorateTemplateAndTheme';
+export { fetchPlaceholders } from '../utils/fetchPlaceholders';
+export { getMetadata } from '../utils/getMetadata';
+export { loadBlock } from '../utils/loadBlock';
+export { loadBlocks } from '../utils/loadBlocks';
+export { loadCSS } from '../utils/loadCSS';
+export { loadFooter } from '../utils/loadFooter';
+export { loadHeader } from '../utils/loadHeader';
+export { loadScript } from '../utils/loadScript';
+export { readBlockConfig } from '../utils/readBlockConfig';
+export { toCamelCase } from '../utils/toCamelCase';
+export { toClassName } from '../utils/toClassName';
+export { updateSectionsStatus } from '../utils/updateSectionsStatus';
+export { waitForLCP } from '../utils/waitForLCP';
+export { wrapTextNodes } from '../utils/wrapTextNodes';
 
 /**
  * Auto initializiation.
  */
 
 function init() {
-  setup();
-  sampleRUM('top');
+	setup();
+	sampleRUM('top');
 
-  window.addEventListener('load', () => sampleRUM('load'));
+	window.addEventListener('load', () => sampleRUM('load'));
 
-  window.addEventListener('unhandledrejection', (event) => {
-    sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
-  });
+	window.addEventListener('unhandledrejection', (event) => {
+		sampleRUM('error', {
+			source: event.reason.sourceURL,
+			target: event.reason.line,
+		});
+	});
 
-  window.addEventListener('error', (event) => {
-    sampleRUM('error', { source: event.filename, target: event.lineno });
-  });
+	window.addEventListener('error', (event) => {
+		sampleRUM('error', { source: event.filename, target: event.lineno });
+	});
 }
 
 init();

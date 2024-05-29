@@ -1,6 +1,6 @@
-import { buildBlock } from "./buildBlock.mjs";
-import { decorateBlock } from "./decorateBlock.mjs";
-import { loadBlock } from "./loadBlock.mjs";
+import { buildBlock } from './buildBlock.mjs';
+import { decorateBlock } from './decorateBlock.mjs';
+import { loadBlock } from './loadBlock.mjs';
 
 /**
  * Loads a block named 'header' into header
@@ -8,8 +8,8 @@ import { loadBlock } from "./loadBlock.mjs";
  * @returns {Promise}
  */
 export async function loadHeader(header: Element) {
-  const headerBlock = buildBlock('header', '');
-  header.append(headerBlock);
-  decorateBlock(headerBlock);
-  return loadBlock(headerBlock);
+	const headerBlock = buildBlock('header', '');
+	header.append(headerBlock);
+	decorateBlock(headerBlock);
+	return loadBlock(headerBlock);
 }

@@ -6,5 +6,5 @@
 		"target": "esnext",
 		"rootDir": "src"
 	},
-	"include": ["src"],
+	"include": ["src"]
 }

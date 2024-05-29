@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite';
-import viteTsconfigPaths from 'vite-tsconfig-paths';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
-import PublicFolderWatcher from './vite/public-watch.mjs';
+import viteTsconfigPaths from 'vite-tsconfig-paths';
 import EntryWatcher from './vite/entry-watch.mjs';
+import PublicFolderWatcher from './vite/public-watch.mjs';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -28,8 +28,8 @@ export default defineConfig({
 	},
 	esbuild: {
 		supported: {
-			// Adobe's boilerplate makes some pretty advanced assumptions about 
+			// Adobe's boilerplate makes some pretty advanced assumptions about
 			'top-level-await': true, //browsers can handle top-level-await features
 		},
-	}
+	},
 });
