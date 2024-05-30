@@ -4,21 +4,25 @@ import { loadFragment } from '../fragment/fragment.mjs';
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
-function closeOnEscape(e) {
+function closeOnEscape(e:KeyboardEvent) {
 	if (e.code === 'Escape') {
-		const nav = document.getElementById('nav');
-		const navSections = nav.querySelector('.nav-sections');
-		const navSectionExpanded = navSections.querySelector(
-			'[aria-expanded="true"]',
-		);
-		if (navSectionExpanded && isDesktop.matches) {
-			// eslint-disable-next-line no-use-before-define
-			toggleAllNavSections(navSections);
-			navSectionExpanded.focus();
-		} else if (!isDesktop.matches) {
-			// eslint-disable-next-line no-use-before-define
-			toggleMenu(nav, navSections);
-			nav.querySelector('button').focus();
+		const nav: HTMLElement | null = document.getElementById('nav');
+		if(nav){
+			const navSections = nav.querySelector('.nav-sections');
+			if(navSections){
+				const navSectionExpanded: HTMLElement | null = navSections.querySelector(
+					'[aria-expanded="true"]',
+				);
+				if (navSectionExpanded && isDesktop.matches) {
+					// eslint-disable-next-line no-use-before-define
+					toggleAllNavSections(navSections);
+					navSectionExpanded.focus();
+				} else if (!isDesktop.matches) {
+					// eslint-disable-next-line no-use-before-define
+					toggleMenu(nav, navSections);
+					nav.querySelector('button')?.focus();
+				}
+			}
 		}
 	}
 }
