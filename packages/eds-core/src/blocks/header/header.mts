@@ -27,14 +27,16 @@ function closeOnEscape(e:KeyboardEvent) {
 	}
 }
 
-function openOnKeydown(e) {
+function openOnKeydown(e: KeyboardEvent) {
 	const focused = document.activeElement;
-	const isNavDrop = focused.className === 'nav-drop';
-	if (isNavDrop && (e.code === 'Enter' || e.code === 'Space')) {
-		const dropExpanded = focused.getAttribute('aria-expanded') === 'true';
-		// eslint-disable-next-line no-use-before-define
-		toggleAllNavSections(focused.closest('.nav-sections'));
-		focused.setAttribute('aria-expanded', dropExpanded ? 'false' : 'true');
+	if(focused){
+		const isNavDrop = focused.className === 'nav-drop';
+		if (isNavDrop && (e.code === 'Enter' || e.code === 'Space')) {
+			const dropExpanded = focused.getAttribute('aria-expanded') === 'true';
+			// eslint-disable-next-line no-use-before-define
+			toggleAllNavSections(focused.closest('.nav-sections'));
+			focused.setAttribute('aria-expanded', dropExpanded ? 'false' : 'true');
+		}
 	}
 }
 
