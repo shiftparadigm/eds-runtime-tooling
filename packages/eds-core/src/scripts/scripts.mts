@@ -28,7 +28,7 @@ async function loadFonts() {
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
-async function loadEager(doc) {
+async function loadEager(doc:Document) {
 	document.documentElement.lang = 'en';
 	decorateTemplateAndTheme();
 	const main = doc.querySelector('main');
@@ -41,7 +41,7 @@ async function loadEager(doc) {
 	try {
 		/* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
 		if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
-			loadFonts();
+			await loadFonts();
 		}
 	} catch (e) {
 		// do nothing
