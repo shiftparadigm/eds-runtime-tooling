@@ -10,9 +10,9 @@ import { loadBlocks } from '../../utils/loadBlocks.mjs';
 /**
  * Loads a fragment.
  * @param {string} path The path to the fragment
- * @returns {HTMLElement} The root element of the fragment
+ * @returns {Promise<HTMLElement | null>} The root element of the fragment
  */
-export async function loadFragment(path) {
+export async function loadFragment(path: string): Promise<HTMLElement | null> {
 	if (path && path.startsWith('/')) {
 		const resp = await fetch(`${path}.plain.html`);
 		if (resp.ok) {
@@ -24,7 +24,7 @@ export async function loadFragment(path) {
 				main.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((elem) => {
 					elem[attr] = new URL(
 						elem.getAttribute(attr),
-						new URL(path, window.location),
+						new URL(path, window.location.href),
 					).href;
 				});
 			};
@@ -39,15 +39,17 @@ export async function loadFragment(path) {
 	return null;
 }
 
-export default async function decorate(block) {
+export default async function decorate(block: Element): Promise<void> {
 	const link = block.querySelector('a');
-	const path = link ? link.getAttribute('href') : block.textContent.trim();
-	const fragment = await loadFragment(path);
-	if (fragment) {
-		const fragmentSection = fragment.querySelector(':scope .section');
-		if (fragmentSection) {
-			block.closest('.section').classList.add(...fragmentSection.classList);
-			block.closest('.fragment').replaceWith(...fragment.childNodes);
+	const path = link ? link.getAttribute('href') : block.textContent?.trim();
+	if(path){
+		const fragment = await loadFragment(path);
+		if (fragment) {
+			const fragmentSection = fragment.querySelector(':scope .section');
+			if (fragmentSection) {
+				(block.closest('.section') ?? block).classList.add(...[String(fragmentSection.classList)]);
+				(block.closest('.fragment') ?? block).replaceWith(...[String(fragment.childNodes)]);
+			}
 		}
 	}
 }
