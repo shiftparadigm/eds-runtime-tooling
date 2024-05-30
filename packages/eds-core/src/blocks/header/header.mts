@@ -4,8 +4,8 @@ import { loadFragment } from '../fragment/fragment.mjs';
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
-function closeOnEscape(e:KeyboardEvent) {
-	if (e.code === 'Escape') {
+function closeOnEscape(e:Event | KeyboardEvent) {
+	if (e instanceof KeyboardEvent && e.code === 'Escape') {
 		const nav: HTMLElement | null = document.getElementById('nav');
 		if(nav){
 			const navSections = nav.querySelector('.nav-sections');
@@ -27,11 +27,11 @@ function closeOnEscape(e:KeyboardEvent) {
 	}
 }
 
-function openOnKeydown(e: KeyboardEvent) {
+function openOnKeydown(e: Event | KeyboardEvent) {
 	const focused = document.activeElement;
 	if(focused){
 		const isNavDrop = focused.className === 'nav-drop';
-		if (isNavDrop && (e.code === 'Enter' || e.code === 'Space')) {
+		if (e instanceof KeyboardEvent && isNavDrop && (e.code === 'Enter' || e.code === 'Space')) {
 			const dropExpanded = focused.getAttribute('aria-expanded') === 'true';
 			// eslint-disable-next-line no-use-before-define
 			toggleAllNavSections(focused.closest('.nav-sections'));
@@ -41,7 +41,7 @@ function openOnKeydown(e: KeyboardEvent) {
 }
 
 function focusNavSection() {
-	document.activeElement.addEventListener('keydown', openOnKeydown);
+	document.activeElement?.addEventListener('keydown', openOnKeydown);
 }
 
 /**
