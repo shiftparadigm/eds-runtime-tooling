@@ -28,7 +28,7 @@ async function loadFonts() {
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
-async function loadEager(doc:Document) {
+async function loadEager(doc: Element) {
 	document.documentElement.lang = 'en';
 	decorateTemplateAndTheme();
 	const main = doc.querySelector('main');
