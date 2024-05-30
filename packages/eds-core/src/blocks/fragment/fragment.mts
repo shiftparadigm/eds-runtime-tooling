@@ -20,12 +20,16 @@ export async function loadFragment(path: string): Promise<HTMLElement | null> {
 			main.innerHTML = await resp.text();
 
 			// reset base path for media to fragment base
-			const resetAttributeBase = (tag, attr) => {
+			const resetAttributeBase = (tag: string, attr: string) => {
 				main.querySelectorAll(`${tag}[${attr}^="./media_"]`).forEach((elem) => {
-					elem[attr] = new URL(
-						elem.getAttribute(attr),
-						new URL(path, window.location.href),
-					).href;
+					elem.setAttribute(
+						attr,
+						new URL(
+							elem.getAttribute(attr)
+								? (elem.getAttribute(attr), new URL(path, window.location.href))
+								: new URL(path, window.location.href),
+						).href,
+					);
 				});
 			};
 			resetAttributeBase('img', 'src');
@@ -39,16 +43,20 @@ export async function loadFragment(path: string): Promise<HTMLElement | null> {
 	return null;
 }
 
-export default async function decorate(block: Element): Promise<void> {
+export default async function decorate(block: Element) {
 	const link = block.querySelector('a');
 	const path = link ? link.getAttribute('href') : block.textContent?.trim();
-	if(path){
+	if (path) {
 		const fragment = await loadFragment(path);
 		if (fragment) {
 			const fragmentSection = fragment.querySelector(':scope .section');
 			if (fragmentSection) {
-				(block.closest('.section') ?? block).classList.add(...[String(fragmentSection.classList)]);
-				(block.closest('.fragment') ?? block).replaceWith(...[String(fragment.childNodes)]);
+				(block.closest('.section') ?? block).classList.add(
+					...[String(fragmentSection.classList)],
+				);
+				(block.closest('.fragment') ?? block).replaceWith(
+					...[String(fragment.childNodes)],
+				);
 			}
 		}
 	}
