@@ -50,22 +50,24 @@ async function loadEager(doc: Element) {
 
 /**
  * Loads everything that doesn't need to be delayed.
- * @param {Element} doc The container element
+ * @param {Document} doc The container element
  */
-async function loadLazy(doc) {
+async function loadLazy(doc: Document) {
 	const main = doc.querySelector('main');
-	await loadBlocks(main);
+	await loadBlocks(main as Element);
 
 	const { hash } = window.location;
 	const element = hash ? doc.getElementById(hash.substring(1)) : false;
 	if (hash && element) element.scrollIntoView();
 
-	loadHeader(doc.querySelector('header'));
-	loadFooter(doc.querySelector('footer'));
+	await Promise.all([
 
-	loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-	loadFonts();
-
+		loadHeader(doc.querySelector('header') as Element),
+		loadFooter(doc.querySelector('footer') as Element),
+		
+		loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`),
+		loadFonts(),	
+	])
 	sampleRUM('lazy');
 	sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
 	sampleRUM.observe(main.querySelectorAll('picture > img'));
