@@ -6,11 +6,11 @@ import { toClassName } from './toClassName.mjs';
  * Decorates all sections in a container element.
  * @param {Element} main The container element
  */
-export function decorateSections(main) {
-	main.querySelectorAll(':scope > div').forEach((section) => {
-		const wrappers = [];
+export function decorateSections(main: Element) {
+	main.querySelectorAll<HTMLElement>(':scope > div').forEach((section) => {
+		const wrappers: Element[] = [];
 		let defaultContent = false;
-		[...section.children].forEach((e) => {
+		Array.from(section.children).forEach((e) => {
 			if (e.tagName === 'DIV' || !defaultContent) {
 				const wrapper = document.createElement('div');
 				wrappers.push(wrapper);
@@ -30,13 +30,16 @@ export function decorateSections(main) {
 			const meta = readBlockConfig(sectionMeta);
 			Object.keys(meta).forEach((key) => {
 				if (key === 'style') {
-					const styles = meta.style
-						.split(',')
-						.filter((style) => style)
-						.map((style) => toClassName(style.trim()));
-					styles.forEach((style) => section.classList.add(style));
+					const value = meta.get('style');
+					if (value) {
+						const styles: string[] = value
+							.split(',')
+							.filter((style) => style)
+							.map((style) => toClassName(style.trim()));
+						styles.forEach((style) => section.classList.add(style));
+					}
 				} else {
-					section.dataset[toCamelCase(key)] = meta[key];
+					section.dataset[toCamelCase(key)] = meta.get(key);
 				}
 			});
 			sectionMeta.parentNode.remove();
