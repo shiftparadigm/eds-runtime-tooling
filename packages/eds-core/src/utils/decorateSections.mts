@@ -30,19 +30,19 @@ export function decorateSections(main: Element) {
 			const meta = readBlockConfig(sectionMeta);
 			Object.keys(meta).forEach((key) => {
 				if (key === 'style') {
-					const value = meta.get('style');
-					if (value) {
-						const styles: string[] = value
-							.split(',')
-							.filter((style) => style)
-							.map((style) => toClassName(style.trim()));
-						styles.forEach((style) => section.classList.add(style));
-					}
+					const styles: string[] = (
+						typeof meta.style === 'string' ? meta.style.split(',') : meta.style
+					)
+						.filter((style) => style)
+						.map((style) => toClassName(style.trim()));
+					styles.forEach((style) => section.classList.add(style));
 				} else {
-					section.dataset[toCamelCase(key)] = meta.get(key);
+					const value = meta[key];
+					section.dataset[toCamelCase(key)] =
+						typeof value === 'string' ? value : value.join(',');
 				}
 			});
-			sectionMeta.parentNode.remove();
+			(sectionMeta.parentNode as Element).remove();
 		}
 	});
 }
