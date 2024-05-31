@@ -60,14 +60,12 @@ async function loadLazy(doc: Document) {
 	const element = hash ? doc.getElementById(hash.substring(1)) : false;
 	if (hash && element) element.scrollIntoView();
 
-	await Promise.all([
+	void loadHeader(doc.querySelector('header') as Element);
+	void loadFooter(doc.querySelector('footer') as Element);
 
-		loadHeader(doc.querySelector('header') as Element),
-		loadFooter(doc.querySelector('footer') as Element),
-		
-		loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`),
-		loadFonts(),	
-	])
+	void loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+	void loadFonts();
+
 	sampleRUM('lazy');
 	sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
 	sampleRUM.observe(main.querySelectorAll('picture > img'));
