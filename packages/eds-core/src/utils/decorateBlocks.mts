@@ -6,6 +6,6 @@ import { decorateBlock } from './decorateBlock.mjs';
  */
 export function decorateBlocks(main: Element) {
 	main
-		.querySelectorAll<HTMLElement>('div.section > div > div')
+		.querySelectorAll<HTMLDivElement>('div.section > div > div')
 		.forEach(decorateBlock);
 }
