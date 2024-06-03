@@ -5,37 +5,40 @@ import { toClassName } from './toClassName.mjs';
  * @param {Element} block The block element
  * @returns {object} The block config
  */
-export function readBlockConfig(block) {
-	const config = {};
+
+export function readBlockConfig(
+	block: Element,
+): Record<string, string | string[]> {
+	const config: Record<string, string | string[]> = {};
 	block.querySelectorAll(':scope > div').forEach((row) => {
 		if (row.children) {
-			const cols = [...row.children];
+			const cols = Array.from(row.children);
 			if (cols[1]) {
 				const col = cols[1];
-				const name = toClassName(cols[0].textContent);
-				let value = '';
+				const name = toClassName(cols[0].textContent ?? '');
+				let value: string | string[] = '';
 				if (col.querySelector('a')) {
-					const as = [...col.querySelectorAll('a')];
+					const as = Array.from(col.querySelectorAll('a'));
 					if (as.length === 1) {
 						value = as[0].href;
 					} else {
 						value = as.map((a) => a.href);
 					}
 				} else if (col.querySelector('img')) {
-					const imgs = [...col.querySelectorAll('img')];
+					const imgs = Array.from(col.querySelectorAll('img'));
 					if (imgs.length === 1) {
 						value = imgs[0].src;
 					} else {
 						value = imgs.map((img) => img.src);
 					}
 				} else if (col.querySelector('p')) {
-					const ps = [...col.querySelectorAll('p')];
+					const ps = Array.from(col.querySelectorAll('p'));
 					if (ps.length === 1) {
-						value = ps[0].textContent;
+						value = ps[0].textContent ?? '';
 					} else {
-						value = ps.map((p) => p.textContent);
+						value = ps.map((p) => p.textContent ?? '');
 					}
-				} else value = row.children[1].textContent;
+				} else value = row.children[1].textContent ?? '';
 				config[name] = value;
 			}
 		}
