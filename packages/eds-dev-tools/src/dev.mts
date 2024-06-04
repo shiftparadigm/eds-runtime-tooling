@@ -3,6 +3,7 @@ import type { RollupWatcher, RollupWatcherEvent } from 'rollup';
 import { build } from 'vite';
 import type { SpawnOptionsWithoutStdio } from 'node:child_process';
 import { exec, spawn, type ExecOptions } from 'node:child_process';
+import { rmdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { entryGlobs } from './vite/entry-watch.mjs';
@@ -24,9 +25,15 @@ chokidarWatcher.on('unlink', (path) => {
 	restartBuildServer();
 });
 
-await spawnNodeAsync('@adobe/aem-cli', ['up'], {
+const adobeCli = spawnNodeAsync('@adobe/aem-cli', ['up'], {
 	cwd: join(process.cwd(), 'dist'),
 });
+
+await new Promise((resolve) => setTimeout(resolve, 5000));
+
+await rmdir('dist/.git', { recursive: true });
+
+await adobeCli;
 
 function setupBuildServer() {
 	return build({
