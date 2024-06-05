@@ -3,7 +3,6 @@ import type { RollupWatcher, RollupWatcherEvent } from 'rollup';
 import { build } from 'vite';
 import type { SpawnOptionsWithoutStdio } from 'node:child_process';
 import { exec, spawn, type ExecOptions } from 'node:child_process';
-import { rmdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { entryGlobs } from './vite/entry-watch.mjs';
