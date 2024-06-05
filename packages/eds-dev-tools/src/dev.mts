@@ -31,8 +31,6 @@ const adobeCli = spawnNodeAsync('@adobe/aem-cli', ['up'], {
 
 await new Promise((resolve) => setTimeout(resolve, 5000));
 
-await rmdir('dist/.git', { recursive: true });
-
 await adobeCli;
 
 function setupBuildServer() {
@@ -87,7 +85,8 @@ async function ensureGitDir(path: string): Promise<void> {
 	const target = join(process.cwd(), path, '.git');
 	const gitRemote = (await execAsync(`git config remote.origin.url`)).trim();
 	try {
-		await execAsync(`git clone --bare ${gitRemote} "${target}"`);
+		await execAsync(`git clone --bare "${process.cwd()}" "${target}" -o fake`);
+		await execAsync(`git remote add origin ${gitRemote}`, { cwd: target });
 	} catch (ex) {
 		console.warn('failed to clone git repo for use with AEM CLI');
 	}
