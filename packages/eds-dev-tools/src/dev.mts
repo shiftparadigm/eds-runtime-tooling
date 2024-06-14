@@ -7,6 +7,7 @@ import type { SpawnOptionsWithoutStdio } from 'node:child_process';
 import { exec, spawn, type ExecOptions } from 'node:child_process';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { defaultViteConfigPathIfMissing } from './vite/config-resolver.mjs';
 import { entryGlobs } from './vite/entry-watch.mjs';
 
 let watcher = setupBuildServer();
@@ -36,6 +37,7 @@ await adobeCli;
 
 function setupBuildServer() {
 	return build({
+		configFile: defaultViteConfigPathIfMissing(),
 		mode: 'development',
 		build: {
 			watch: {},
