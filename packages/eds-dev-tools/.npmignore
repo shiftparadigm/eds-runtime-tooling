@@ -2,3 +2,5 @@ src/**/*.js
 src/**/*.mjs
 src/**/*.ts
 src/**/*.mts
+.*
+tsconfig*

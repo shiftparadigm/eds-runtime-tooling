@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import chokidar from 'chokidar';
 import type { RollupWatcher, RollupWatcherEvent } from 'rollup';
 import { build } from 'vite';
