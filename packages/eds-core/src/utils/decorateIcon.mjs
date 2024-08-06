@@ -8,6 +8,12 @@ export function decorateIcon(span, prefix = '', alt = '') {
 	const iconName = Array.from(span.classList)
 		.find((c) => c.startsWith('icon-'))
 		.substring(5);
+
+	const existingIcon = [...span.querySelectorAll('img')].find((img) => {
+		return img.dataset.iconName === iconName;
+	});
+	if (existingIcon) return;
+
 	const img = document.createElement('img');
 	img.dataset.iconName = iconName;
 	img.src = `${window.hlx.codeBasePath}${prefix}/icons/${iconName}.svg`;
